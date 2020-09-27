@@ -11,11 +11,11 @@ const delivery = require ('./caps.js').driverDelivered;
 
 
 function gotDelivered(payload){
-    events.emit('in-transit', payload)
-    setTimeout(()=>{
-        events.emit('delivered', payload)
-    },3000);
-};
+  events.emit('in-transit', payload);
+  setTimeout(()=>{
+    events.emit('delivered', payload);
+  },3000);
+}
 events.on('pickup', pickup );
 events.on('pickup', gotDelivered );
 events.on('delivered', delivery );
