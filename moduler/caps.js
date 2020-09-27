@@ -1,52 +1,56 @@
 'use strict';
-// requir the faker module to get fake data
-// const fakeData = require ('faker');
 
 // function to handel that the order if ready to pickup
-function readyToPickup(payload){
-    console.log(`EVENT { event: 'pickup',`);
-    console.log('time', payload.orderTime);
-    console.log('store', payload.storeName);
-    console.log('orderID', payload.orderID);
-    console.log('customerName', payload.customerName );
-    console.log('customerAddress', payload.customerAddress);
+function pickupOrder (payload){
+    console.log('EVENT { event:  pickup');
+    console.log( payload.orderTime);
+    console.log('payload:');
+    console.log('{store Name:', payload.storeName);
+    console.log('order ID:', payload.orderId);
+    console.log('customer Name:', payload.customerName );
+    console.log('customer Address:', payload.customerAddress, '}}');
 }
 
 //function to give an alert that the order picked up by the driver
-function orderReadyToPickupByThedriver  (payload){
-    console.log(`The order with the: ${payload.orderID} has been picked up `);
+function driverPickUp  (payload){
+    console.log(`DRIVER: The order with the: ${payload.orderId} has been picked up `);
 }
+
 
 //function to give an alert that the order in-transit by the driver
-function orderInTransit  (payload){
-    console.log(`EVENT:'in-transit'.The order with the ID: ${payload.orderID} is in the transit from the ${payload.storeName} to ${payload.customerAddress}.`);
+function inTransitOrder  (payload){
+    console.log(`EVENT:'in-transit': The order with the ID: ${payload.orderId} is in the transit from the ${payload.storeName} to ${payload.customerAddress}.`); 
+    // not accsseing the concatenate??????/
 }
 
+
 //function to give an alert that the order  delivered up  by the driver
-function orderDeliveredUpByThedriver (payload){
-    console.log(`The driver${payload.driverName}: delivered up The order with the ID ${payload.orderID}`);
+function driverDelivered (payload){
+    console.log(`The driver: delivered up The order with the ID ${payload.orderId}`);
 }
+
+
 // function to tahnks the driver by a log for the dilvery 
 function vendor (payload){
-    console.log(`Vendor: thank you for delivering the order that has the follwing ID ${payload.orderID}`);
+    console.log(`Vendor: thank you for delivering the order that has the follwing ID ${payload.orderId}`);
 }
 
 // function to send a log that the order has been delivered
-function finaldelivery(payload){
-    console.log(`EVENT { event: 'pickup',`);
-    console.log('time', payload.orderTime);
-    console.log('store', payload.storeName);
-    console.log('orderID', payload.orderID);
-    console.log('customerName', payload.customerName );
-    console.log('customerAddress', payload.customerAddress);
+function deliveredOrder(payload){
+    console.log(`EVENT { event: 'delivered',`);
+    console.log(payload.orderTime);
+    console.log('payload:');
+    console.log('{store Name: ', payload.storeName);
+    console.log('order ID: ', payload.orderId);
+    console.log('customer Name: ', payload.customerName );
+    console.log('customer Address: ', payload.customerAddress, '}}');
 }
 
-// exporting the finction to use it in other files
-module.exports= {
-    readyToPickup,
-    orderReadyToPickupByThedriver,
-    orderInTransit,
-    orderDeliveredUpByThedriver,
+module.exports={
     vendor,
-    finaldelivery
-}
+    driverPickUp,
+    driverDelivered,
+    pickupOrder,
+    inTransitOrder,
+    deliveredOrder,
+};

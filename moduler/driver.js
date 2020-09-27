@@ -1,21 +1,21 @@
-'use strict';
+// 'use strict';
 
-//  requir the events.js to use the eventsInstance
-const event = require ('./events.js');
+// //  requir the events.js to use the eventsInstance
+const events = require ('./events.js');
 
 //  requir the caps file to use the pickup function
-const pickup = require ('./caps.js').readyToPickup;
+const pickup = require ('./caps.js').driverPickUp;
 
 //  requir the caps file to use the delivery function
-const delivery = require ('./caps.js').orderDeliveredUpByThedriver;
+const delivery = require ('./caps.js').driverDelivered;
 
 
 function gotDelivered(payload){
-    event.emit('in-transit', payload.orderID)
+    events.emit('in-transit', payload)
     setTimeout(()=>{
-        event.emit('Delivered', payload)
-    },1000);
+        events.emit('delivered', payload)
+    },3000);
 };
-event.on('pickup', pickup );
-event.on('pickup', gotDelivered );
-event.on('delivered', delivery );
+events.on('pickup', pickup );
+events.on('pickup', gotDelivered );
+events.on('delivered', delivery );

@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 // requir the faker module to get fake data
 const fakeData = require ('faker/locale/en')
 
@@ -6,13 +6,13 @@ const fakeData = require ('faker/locale/en')
 const vendor = require ('./caps.js').vendor;
 
 //  requir the events.js to use the eventsInstance
-const event = require ('./events.js');
+const events = require ('./events.js');
 
 // using the faker to create a fake company name
 const storeName = fakeData.company.companyName();
 
 // using the faker to create a fake orderID
-const orderID = fakeData.random.uuid();
+const orderId = fakeData.random.uuid();
 
 // using the faker to create a fake customerName
 const customerName = fakeData.name.findName();
@@ -28,7 +28,7 @@ const customerAddress2 = fakeData.address.county();
 
 // using the faker to create a fake customerAddress3 (name of streetAddress)
 const customerAddress3 = fakeData.address.streetAddress();
-// concatenate all address
+// concatenate all addresses
 let customerAddress = `${customerAddress1}, ${customerAddress2}, ${customerAddress3}`;
 
 // requesting time and consoling the info.
@@ -44,14 +44,21 @@ let orderTime = `order time:  ${Date1}, ${timeInHours}:${timeInMinutes}:${timeIn
 console.log('>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>');
 const order = {
     storeName: storeName,
-    orderID:orderID,
+    orderId: orderId,
     customerName:customerName,
     customerAddress:customerAddress,
     orderTime: orderTime
     }
     
-    event.emit('pickup', order)
+    events.emit('pickup', order)
 // the Interval is five seconds
  },5000);
 
- event.on('delivered', vendor )
+ events.on('delivered', vendor )
+
+
+
+
+
+
+// events.on('delivered', handler);
