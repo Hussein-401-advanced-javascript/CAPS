@@ -1,6 +1,6 @@
 // 'use strict';
 // requir the faker module to get fake data
-const fakeData = require ('faker/locale/en')
+const fakeData = require ('faker/locale/en');
 
 //  requir the caps file to use the vendor function
 const vendor = require ('./caps.js').vendor;
@@ -16,9 +16,6 @@ const orderId = fakeData.random.uuid();
 
 // using the faker to create a fake customerName
 const customerName = fakeData.name.findName();
-
-// using the faker to create a fake DRIVERName
-const DRIVERName = fakeData.name.findName();
 
 // using the faker to create a fake customerAddress1 (name of country)
 const customerAddress1 = fakeData.address.country();
@@ -36,25 +33,25 @@ let Date1 = new Date().toDateString();
 let timeInHours = new Date().getHours();
 let timeInMinutes = new Date().getMinutes();
 let timeInSeconds = new Date().getSeconds();
-let orderTime = `order time:  ${Date1}, ${timeInHours}:${timeInMinutes}:${timeInSeconds}`
+let orderTime = `order time:  ${Date1}, ${timeInHours}:${timeInMinutes}:${timeInSeconds}`;
 
 // declear the fake data we will use it in the order
 // set a setInterval to simulate a new customer order
- setInterval(()=>{
-console.log('>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>');
-const order = {
+setInterval(()=>{
+  console.log('>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>');
+  const order = {
     storeName: storeName,
     orderId: orderId,
     customerName:customerName,
     customerAddress:customerAddress,
-    orderTime: orderTime
-    }
+    orderTime: orderTime,
+  };
     
-    events.emit('pickup', order)
+  events.emit('pickup', order);
 // the Interval is five seconds
- },5000);
+},5000);
 
- events.on('delivered', vendor )
+events.on('delivered', vendor );
 
 
 
