@@ -1,58 +1,50 @@
 'use strict';
-require('dotenv').config();
-const uuid = require('uuid-random');
+
+const io = require('socket.io')(3000);
 
 
-const net = require('net');
-const server = net.createServer();
+const caps = io.of('/caps');
 
-const port = process.env.PORT || 4000;
-server.listen(port, () => console.log(`server runing on ${port}`));
+caps.on('connection', (socket) => {
+  console.log(new Date().toLocaleTimeString(), 'Connected : ', socket.id);
 
-let socketPool = {};
+  let currentRoom = '';
 
+  socket.on('join', (room) => {
 
-server.on('connection', (socket) => {
-  console.log(' user is online !!!');
+    socket.join(room);
+    currentRoom = room;
 
-  let id = uuid();
-  socketPool[id] = socket;
-
-  socket.on('data', buffer => {
-    // encoded buffer
-    // console.log("buffer >>>> ", buffer);
-    // parse buffer
-    let msg = JSON.parse(buffer.toString());
-    console.log('msg >>> ', msg);
-
-    if (msg.event == 'pickup' || msg.event == 'in-transit' || msg.event == 'delivered') {
-      broadcast(msg);
-    }else {
-      console.log('nothing');
-    }
+    console.log({ currentRoom });
 
   });
 
-  server.on('error', (e) => {
-    console.log('ERROR !!!!!!! ', e);
+  socket.on('pickup', (payload) => {
+    caps.emit('pickup', payload);
+    broadcast('pickup',payload);
   });
 
-  server.on('close', () => {
-    delete socketPool[id];
+  socket.on('in-transit', (payload) => {
+    caps.emit('in-transit', payload);
+    broadcast('in-transit',payload);
+    
   });
-
+  
+  socket.on('delivered', (payload) => {
+    caps.emit('delivered', payload);
+    broadcast('delivered',payload);
+    
+  });
+  
 });
 
 /**
- * this function send the payload to the driver and vendor
- * @param {*} msg 
+ * this function to brodcast and send the event and payload 
+ * @param {*} event 
+ * @param {*} payload 
  */
-function broadcast(msg) {
-  let payload = JSON.stringify(msg);
-  for (let id in socketPool) {
-    socketPool[id].write(payload);
-  }
+function broadcast(event , payload){
+  console.log({event,payload});
 }
 
-
-module.exports = server
+module.exports = caps;
