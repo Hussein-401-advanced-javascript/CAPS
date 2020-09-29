@@ -1,35 +1,19 @@
 'use strict';
 require('dotenv').config();
 var faker = require('faker');
-const net = require('net');
 
-const client = new net.Socket();  
+const io = require('socket.io-client');
+const caps = io.connect('http://localhost:3000/caps');
 
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 4000;
+const storeName = process.env.STORE_NAME;
+caps.emit('join', (storeName) );
+  
 
-/**
- * to listining on port and  host 
- */
-client.connect(port, host, ()=> {
-    console.log("vendor Connecting ... ");
-});
+caps.on('delivered', (payload) => {
 
-client.on('data', (data)=> {
-  let jsonData = JSON.parse(data);
-  // console.log('jsonData>>',jsonData);
-  if(jsonData.event == 'delivered'){
-        console.log(`VENDOR:  : thank you for delivering ${jsonData.payload.orderId}`);
-  }
+    console.log(`VENDOR:  : thank you for delivering ${payload.orderId}`);
 
-});
-
-client.on('close', function () {
-  clearInterval(interval);
-  console.log("connection is closed!!");
-
-});
-
+})
 
 
 /**
@@ -43,10 +27,7 @@ function dataObj(){
     Address: faker.address.streetAddress(), 
   };    
 
-  const msg = JSON.stringify({event: 'pickup' , payload: obj});
-  client.write(msg);
-
+    caps.emit('pickup',obj);
 }
 
-let interval = setInterval(dataObj,5000);
-
+ setInterval(dataObj,5000);

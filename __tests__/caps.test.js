@@ -15,11 +15,6 @@ describe('Events Handler' , ()=>{
   consoleSpy = jest.spyOn(console, 'log').mockImplementation();
 
 
-  // let payload = {storeCompany:'laithStore' ,
-  //   orderId:123 ,
-  //   Customer: 'laith',
-  //   Address: 'jordan-al Azraq'};
-
   console.log('consoleSpy',consoleSpy);
 
   it('pickup', () => {
